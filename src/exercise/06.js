@@ -2,21 +2,23 @@
 // http://localhost:3000/isolated/exercise/06.js
 
 import * as React from 'react'
-import { useState, useRef } from 'react';
+import {useState, useRef} from 'react'
 
 function UsernameForm({onSubmitUsername}) {
-  let inputRef = useRef(null);
-  const [usernameError, setUsernameError] = React.useState(null);
+  let inputRef = useRef(null)
+  const [usernameError, setUsernameError] = React.useState(null)
+  const [usernameInput, setUsernameInput] = React.useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmitUsername(inputRef.current.value);
+  const handleSubmit = e => {
+    e.preventDefault()
+    onSubmitUsername(usernameInput)
   }
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    const isValid = value === value.toLowerCase();
-    setUsernameError(isValid ? null : 'Username must be lower case');
+  const handleChange = e => {
+    const value = e.target.value
+    // const isValid = value === value.toLowerCase();
+    // setUsernameError(isValid ? null : 'Username must be lower case');
+    setUsernameInput(value.toLowerCase())
   }
 
   const isDisabled = () => usernameError !== null
@@ -25,12 +27,15 @@ function UsernameForm({onSubmitUsername}) {
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="usernameInput">Username:</label>
-        <input id="usernameInput" type="text" ref={inputRef} onChange={handleChange} />
+        <input
+          id="usernameInput"
+          type="text"
+          ref={inputRef}
+          value={usernameInput}
+          onChange={handleChange}
+        />
       </div>
-      <div role="alert" style={{color: 'red'}}>
-        {usernameError}
-      </div>
-      <button disabled={isDisabled()} type="submit">Submit</button>
+      <button type="submit">Submit</button>
     </form>
   )
 }
